@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work in Progress | 2PIXELCELLS</title>
+    <style>
+        :root {
+            /* Palette Ufficiale */
+            --c1: #ffd319; /* Giallo */
+            --c2: #ff901f; /* Arancio */
+            --c3: #ff2975; /* Rosa vivido */
+            --c4: #c700b5; /* Viola/Magenta */
+            --c5: #b000ff; /* Viola profondo */
+            
+            --bg-dark: #050010;
+            --neon-cyan: #00ffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, #1a0033 0%, var(--bg-dark) 80%);
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Effetto CRT Monitor Dinamico --- */
+        body::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            z-index: 100;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            animation: crtFlicker 0.15s infinite;
+        }
+
+        @keyframes crtFlicker {
+            0% { opacity: 0.9; }
+            50% { opacity: 1; }
+            100% { opacity: 0.9; }
+        }
+
+        /* --- Griglia 3D Animata --- */
+        .grid {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+            background-image: 
+                linear-gradient(0deg, transparent 24%, var(--c3) 25%, var(--c3) 26%, transparent 27%, transparent 74%, var(--c3) 75%, var(--c3) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, var(--c3) 25%, var(--c3) 26%, transparent 27%, transparent 74%, var(--c3) 75%, var(--c3) 76%, transparent 77%, transparent);
+            background-size: 60px 60px;
+            transform: perspective(500px) rotateX(60deg);
+            animation: moveGrid 1.5s linear infinite;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        @keyframes moveGrid {
+            from { background-position: 0 0; }
+            to { background-position: 0 60px; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* --- IL SOLE ANIMATO --- */
+        .sun {
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, 
+                var(--c1) 0%, 
+                var(--c2) 25%, 
+                var(--c3) 50%, 
+                var(--c4) 75%, 
+                var(--c5) 100%
+            );
+            box-shadow: 0 0 60px var(--c3);
+            position: relative;
+            margin-bottom: 30px;
+            overflow: hidden;
+            animation: sunPulse 4s ease-in-out infinite;
+        }
+
+        /* Linee che scorrono nel sole */
+        .sun::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                var(--bg-dark) 0%,
+                var(--bg-dark) 4%,
+                transparent 4%,
+                transparent 12%
+            );
+            background-size: 100% 40px; /* Spessore linee */
+            animation: scrollLines 8s linear infinite;
+        }
+
+        @keyframes scrollLines {
+            from { background-position: 0 0; }
+            to { background-position: 0 -320px; }
+        }
+
+        @keyframes sunPulse {
+            0%, 100% { box-shadow: 0 0 60px var(--c3); }
+            50% { box-shadow: 0 0 90px var(--c4); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            letter-spacing: 12px;
+            color: white;
+            text-shadow: 4px 4px var(--c3), -2px -2px var(--neon-cyan);
+            margin-top: 10px;
+            animation: glitch 5s infinite;
+        }
+
+        p {
+            font-size: 1.3rem;
+            letter-spacing: 6px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            font-weight: bold;
+            animation: neonBreathe 2s ease-in-out infinite;
+        }
+
+        @keyframes neonBreathe {
+            0%, 100% { opacity: 0.8; text-shadow: 0 0 10px var(--neon-cyan); }
+            50% { opacity: 1; text-shadow: 0 0 25px var(--neon-cyan), 0 0 5px white; }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); text-shadow: 4px 4px var(--c3), -2px -2px var(--neon-cyan); }
+            2% { transform: translate(-3px, 2px); text-shadow: 6px 0px var(--c1), -4px 0px var(--c5); }
+            4% { transform: translate(3px, -1px); text-shadow: -4px 0px var(--c1), 4px 0px var(--c5); }
+            6% { transform: translate(0); }
+            100% { transform: translate(0); }
+        }
+
+        footer {
+            position: absolute;
+            bottom: 25px;
+            opacity: 0.4;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid"></div>
+
+    <div class="container">
+        <div class="sun"></div>
+        <h1>WORK IN PROGRESS</h1>
+        <p>2PIXELCELLS STUDIO</p>
+    </div>
+
+    <footer>
+        RETRO-ENGINE v3.5 | © 2026
+    </footer>
+
+</body>
+</html>
